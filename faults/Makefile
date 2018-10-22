@@ -16,7 +16,9 @@ HFLAGS=--hacks --diff hybrid $(PATT)
 HOST=$(or $(shell uname -n | cut -f1 -d"." | tr '-' '_'),$(error HOST computation failed))
 PWD=$(or $(shell pwd),$(error PWD computation failed))
 DIR=$(or $(shell basename $(PWD)),$(error DIR computation failed))
-NEW=$(PATTERNS:%=results/linuxes/Linux_%.new.org)
+# It's also specified in the *.hc.base (NEEDS TO BE IDENTICAL!):
+MY_INPUT_PROJECT_DIR:=linux
+NEW=$(PATTERNS:%=results/$(MY_INPUT_PROJECT_DIR)/Linux_%.new.org)
 
 include /usr/share/herodotos/Makefile.inc
 
@@ -25,13 +27,13 @@ include /usr/share/herodotos/Makefile.inc
 $(CONF): $(CONF).base
 	 cpp -P -undef -D$(HOST) $(@:%=%.base) > $@
 fix-mc4:
-	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/var/linuxes|/scratch/linuxes|g" $$f ; done
+	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/var/linuxes|/scratch/$(MY_INPUT_PROJECT_DIR)|g" $$f ; done
 
 fix-bossa:
-	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/home/palix/projects/linux|/var/linuxes|g" $$f ; done
+	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/home/palix/projects/linux|/var/$(MY_INPUT_PROJECT_DIR)|g" $$f ; done
 
 fix-palace:
-	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/var/storage/projects/linux|/var/linuxes|g" $$f ; done
+	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/var/storage/projects/linux|/var/$(MY_INPUT_PROJECT_DIR)|g" $$f ; done
 
 fix-cluster:
 	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/home/npalix|/var|g" $$f ; done
@@ -44,22 +46,22 @@ pack:
 
 extract:
 	mkdir -p v$(VER)
-	cd results/linuxes/ ; find -name "Linux_*.new.org" -exec $(HERODOTOS) extract --orgfile \{} --tag linux-$(VER) --prefix /scratch/linuxes/ -o ../../v$(VER)/\{} \;
+	cd results/$(MY_INPUT_PROJECT_DIR)/ ; find -name "Linux_*.new.org" -exec $(HERODOTOS) extract --orgfile \{} --tag linux-$(VER) --prefix /scratch/$(MY_INPUT_PROJECT_DIR)/ -o ../../v$(VER)/\{} \;
 
 
 UPDATE=$(PATTERNS:%=update-%)
 update: $(UPDATE)
 $(UPDATE): $(NEW)
 	mkdir -p sql
-	$(HERODOTOS) export-reports --prefix /fast_scratch/linuxes/ \
-		--orgfile results/linuxes/Linux_$(@:update-%=%).new.org \
+	$(HERODOTOS) export-reports --prefix /fast_scratch/$(MY_INPUT_PROJECT_DIR)/ \
+		--orgfile results/$(MY_INPUT_PROJECT_DIR)/Linux_$(@:update-%=%).new.org \
 		--to-sql-update linux-$(MINVER) > sql/$@.$(MINVER).sql
 
 EXPORT=$(PATTERNS:%=export-%)
 export: $(EXPORT)
 $(EXPORT): $(NEW)
 	mkdir -p sql
-	$(HERODOTOS) export-reports --prefix /fast_scratch/linuxes/ \
-		--orgfile results/linuxes/Linux_$(@:export-%=%).new.org \
+	$(HERODOTOS) export-reports --prefix /fast_scratch/$(MY_INPUT_PROJECT_DIR)/ \
+		--orgfile results/$(MY_INPUT_PROJECT_DIR)/Linux_$(@:export-%=%).new.org \
 		--to-sql > sql/$@.sql
 
