@@ -25,16 +25,16 @@ include /usr/local/share/herodotos/Makefile.inc
 $(CONF): $(CONF).base
 	 cpp -P -undef -D$(HOST) $(@:%=%.base) > $@
 fix-mc4:
-	for f in `find results/ -name "*.org"`; do sed -i "s|/var/linuxes|/scratch/linuxes|g" $$f ; done
+	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/var/linuxes|/scratch/linuxes|g" $$f ; done
 
 fix-bossa:
-	for f in `find results/ -name "*.org"`; do sed -i "s|/home/palix/projects/linux|/var/linuxes|g" $$f ; done
+	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/home/palix/projects/linux|/var/linuxes|g" $$f ; done
 
 fix-palace:
-	for f in `find results/ -name "*.org"`; do sed -i "s|/var/storage/projects/linux|/var/linuxes|g" $$f ; done
+	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/var/storage/projects/linux|/var/linuxes|g" $$f ; done
 
 fix-cluster:
-	for f in `find results/ -name "*.org"`; do sed -i "s|/home/npalix|/var|g" $$f ; done
+	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/home/npalix|/var|g" $$f ; done
 
 exist.tbz2:
 	find results -name "*.exist" | xargs tar cjvf $@

@@ -31,7 +31,7 @@ populate-study:
 
 populate-funcs:
 	./populate-funcs.sh
-	for f in `ls populate-funcs/*.sql`; do psql $(DBNAME) -f $$f > /dev/null ; done
+	set -e; for f in `ls populate-funcs/*.sql`; do psql $(DBNAME) -f $$f > /dev/null ; done
 
 populate-files: populate-files.sql
 	psql $(DBNAME) -f $< > /dev/null
