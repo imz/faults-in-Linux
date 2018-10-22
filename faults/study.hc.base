@@ -1,12 +1,6 @@
 prefix="."
 patterns="./cocci"
-#ifdef big
-projects="/home/npalix"
-#elif erods_mc_4
-projects="/fast_scratch"
-#else
-projects="/var"
-#endif
+projects="../INPUT-PROJECTS"
 results="./results"
 website="./web"
 dbconn="dbname='atocs' host='localhost' port='5432'"
@@ -16,13 +10,14 @@ flags="-timeout 90 -use_glimpse"
 
 project Linux {
 
- local_scm = "git:linux-full/.git"
- dir = linuxes
+ local_scm = "git:kernel-source-2.6.29/.git"
+ dir = linux
  color = 1 0 0
  linestyle = solid
  marktype = none
 // versions = "^v\(2\.6\.[0-9]+|3\.[0-9]+\)$"
- versions = "linux-{2.6,3}.*"
+// versions = "linux-{2.6,3}.*"
+ versions = "linux-2.6.1*"
 }
 
 pattern ret6 {
