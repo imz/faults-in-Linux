@@ -13,9 +13,9 @@ PATTERNS=block1a block1b block1c var isnull5 null_ref6 copy get  \
 -include ../Makefile.local
 
 HFLAGS=--hacks --diff hybrid $(PATT)
-HOST=$(shell uname -n | cut -f1 -d"." | tr '-' '_')
-PWD=$(shell pwd)
-DIR=$(shell basename $(PWD))
+HOST=$(or $(shell uname -n | cut -f1 -d"." | tr '-' '_'),$(error HOST computation failed))
+PWD=$(or $(shell pwd),$(error PWD computation failed))
+DIR=$(or $(shell basename $(PWD)),$(error DIR computation failed))
 NEW=$(PATTERNS:%=results/linuxes/Linux_%.new.org)
 
 include /usr/local/share/herodotos/Makefile.inc

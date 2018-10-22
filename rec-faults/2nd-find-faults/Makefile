@@ -6,9 +6,9 @@ CONF=find-faults.hc
 -include ../../Makefile.local
 
 HERODOTOS=~/herodotos/herodotos/herodotos
-HOST=$(shell uname -n | cut -f1 -d"." | tr '-' '_')
-PWD=$(shell pwd)
-DIR=$(shell basename $(PWD))
+HOST=$(or $(shell uname -n | cut -f1 -d"." | tr '-' '_'),$(error HOST computation failed))
+PWD=$(or $(shell pwd),$(error PWD computation failed))
+DIR=$(or $(shell basename $(PWD)),$(error DIR computation failed))
 
 include /usr/local/share/herodotos/Makefile.inc
 
