@@ -18,7 +18,7 @@ PWD=$(or $(shell pwd),$(error PWD computation failed))
 DIR=$(or $(shell basename $(PWD)),$(error DIR computation failed))
 NEW=$(PATTERNS:%=results/linuxes/Linux_%.new.org)
 
-include /usr/local/share/herodotos/Makefile.inc
+include /usr/share/herodotos/Makefile.inc
 
 .PHONY:: fix-bossa fix-palace fix-cluster pack exist.tbz2
 

@@ -10,7 +10,7 @@ HOST=$(or $(shell uname -n | cut -f1 -d"." | tr '-' '_'),$(error HOST computatio
 PWD=$(or $(shell pwd),$(error PWD computation failed))
 DIR=$(or $(shell basename $(PWD)),$(error DIR computation failed))
 
-include /usr/local/share/herodotos/Makefile.inc
+include /usr/share/herodotos/Makefile.inc
 
 .PHONY:: pack
 
