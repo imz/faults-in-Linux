@@ -37,7 +37,7 @@ fix-cluster:
 	set -e; for f in `find results/ -name "*.org"`; do sed -i "s|/home/npalix|/var|g" $$f ; done
 
 exist.tbz2:
-	find results -name "*.exist" | xargs tar cjvf $@
+	set -e -o -pipefail; find results -name "*.exist" | xargs tar cjvf $@
 
 pack:
 	tar cjvf ../$(DIR)_$(CONF:%.hc=%)_data.tbz2 -C .. --exclude-vcs $(DIR)
